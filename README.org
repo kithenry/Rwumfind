@@ -1,0 +1,8 @@
+* Rwumfind
+
+* Description
+- A web app for sharing rental posting links and finding room mates by virtue of who's looking for the same room as someone else.
+
+* Capabilities
+- User can share an external link.
+- System notifies user in case someone else posts exactly the same link
