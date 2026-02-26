@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Recent Posts{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('rwumfind.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for post in posts %}
+    <article class="post">
+      <header>
+        <div>
+          <h1>{{ post['room_count']}} room in  {{ post['city'] }}, {{ post['village'] }}</h1>
+        </div>
+        {% if g.user['id'] == post['user_id'] %}
+          <a class="action" href="{{ url_for('rwumfind.update', id=post['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <div>
+	<ul>
+	  {% if post['post_type'] == "need_roommate" %}
+	     <li class="body">Referenced room ad: <a href={{post['ad_link']}}>{{post["ad_link"][:54]}}</a></li>
+	  {% endif %}
+	  <li class="body">Room count: {{ post['room_count'] }}</li>
+          <li class="body">City: {{ post['city'] }} </li>
+	  <li class="body">Suburb: {{ post['village'] }} </li>
+	  <li class="body">Monthly Rent: {{ post['monthly_rent'] }} </li>
+	  <li class="body">Ad owner: {{ post['user_id'] }} </li>
+	  <li class="body">Current user: {{ g.user['id'] }} </li>
+	</ul>
+      </div>
+      <div>
+	{% if g.user['id'] and post['user_id'] != g.user['id'] and post['ad_link'] in session.ad_links  %}
+	<p>This person posted a link similar to one of yours. Would you consider initiating a roommate group?  </p>
+	<button><a href="mailto:{{post['user_mail']}}">Send them mail?</a></button>
+	{% endif %}
+      </div>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

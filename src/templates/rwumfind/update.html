@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Post{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <fieldset>
+       <legend> Please select what you need: </legend>
+       <div>
+         <label for="need_roommate" > A roommate </label>
+	 <input type='radio' id="need_roommate"  value="need_roommate" name="post_type"  {% if post['post_type'] == "need_roommate"  %} checked="checked" {% endif %}  />
+	 <label for="need_room_and_roommate"> A room and a roommate </label>
+	 <input type='radio' id="need_room_and_roommate"  value="need_room_and_roommate" name="post_type"  {% if post['post_type'] == "need_room_and_roommate"  %} checked="checked" {% endif %} />
+       </div>
+    </fieldset>
+    <label for="ad_link">Ad link </label>
+    <input value={{request.form['ad_link'] or post['ad_link']}}   id="ad_link" placeholder="Input ad_link if you have a room and need a roommate" name="ad_link" />
+    <label for="monthly_rent"> Monthly rent </label>
+    <input id="monthly_rent" name="monthly_rent"  value={{request.form['monthly_rent'] or post['monthly_rent']}}  />
+    <label for="currency" > Currency </label>
+    <select id="currency" name="currency">
+      <option value="TL" {% if post['currency'] == "TL" %} selected {% endif %}  >Turkish Lira</option>
+      <option value="USD" {% if post['currency'] == "USD" %} selected {% endif %}    >US Dollars </option>
+    </select>
+
+    <label for="room_count">Room count: </label>
+    <input id="room_count"   name="room_count"    placeholder="format: x+x eg: 1+1 or 4+1 "  value="{{ request.form['room_count'] or post['room_count']  }}"   />
+      
+    <label for="city">City: </label>
+    <input id="city" name="city"  value="{{ request.form['city'] or post['city']  }}"  />
+    
+    <label for="village">Village: </label>
+    <input id="village" name="village"  value="{{ request.form['village'] or post['village']  }}"  />
+    <button type="submit"> Submit </button> 
+   
+  </form>
+  <form action="{{ url_for('rwumfind.delete', id=post['id']) }}" method="post">
+    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+  </form>
+  
+{% endblock %}
